@@ -1,2 +1,2 @@
-# blog-with-symfony
+# blog-symfony
 This test application with use symfony framework
