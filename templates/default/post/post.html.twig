@@ -1,15 +1,14 @@
-{# templates/default/index.html.twig #}
+{# templates/default/post/post.html.twig #}
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Posts</h1>
-    <a href="{{slug}}" target="_blank">
+    <h1>Post</h1>
         <div>
             <p>{{id}}</p>
+            <p>{{slug}}</p>
             <p>{{published}}</p>
             <p>{{author_email}}</p>
             <p>{{title}}</p>
             <p>{{content}}</p>
         </div>
-    </a>
 {% endblock %}

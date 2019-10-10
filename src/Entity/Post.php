@@ -3,8 +3,10 @@
 
 namespace App\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Exception;
 
 /**
  * @ORM\Entity
@@ -55,11 +57,72 @@ class Post
      */
     private $comments;
 
+    /**
+     * Post constructor.
+     * @throws Exception
+     */
     public function __construct()
     {
-        $this->publishedAt = new \DateTime();
+        $this->publishedAt = new DateTime();
         $this->comments = new ArrayCollection();
     }
 
-    // геттеры и сеттеры ...
+    /**
+     * @return DateTime
+     */
+    public function getPublished()
+    {
+        $timestamp = $this->publishedAt->getTimestamp();
+
+        return date('d-F-Y H:i:s', $timestamp);
+    }
+
+    /**
+     * @return string
+     */
+    public function getComments()
+    {
+        return $this->comments;
+    }
+
+    /**
+     * @return string
+     */
+    public function getAuthorEmail()
+    {
+        return $this->authorEmail;
+    }
+
+    /**
+     * @return string
+     */
+    public function getContent()
+    {
+        return $this->content;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSlug()
+    {
+        return $this->slug;
+    }
+
+    /**
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->title;
+    }
+
+    /**
+     * @return int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
 }
