@@ -2,14 +2,27 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Posts</h1>
-    <a href="{{slug}}" target="_blank">
-        <div>
-            <p>{{id}}</p>
-            <p>{{published}}</p>
-            <p>{{author_email}}</p>
-            <p>{{title}}</p>
-            <p>{{content}}</p>
+    <div class="container">
+        <h1>Posts</h1>
+        <div class="row">
+            {% for article in articles %}
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="card-title">{{ article.title }} {{ article.id }}</h4>
+                        <p class="card-text">{{ article.content }}</p>
+                        <a href="{{ article.slug }}" class="card-link">More...</a>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
-    </a>
+        <div class="row">
+            <!-- Button to Open the Modal -->
+            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Add post
+            </button>
+        </div>
+    </div>
+
+    {{ include('default/post/add-post.html.twig') }}
+
 {% endblock %}

@@ -49,16 +49,16 @@ class PostController extends AbstractController
             /** @var int $key */
             /** @var array $post */
             foreach ($posts as $key => $post) {
-                $result['id'] = $post->getId();
-                $result['title'] = $post->getTitle();
-                $result['slug'] = $post->getSlug();
-                $result['content'] = $post->getContent();
-                $result['author_email'] = $post->getAuthorEmail();
-                $result['published'] = $post->getPublished();
-                $result['comments'] = $post->getComments();
+                $result[$key]['id'] = $post->getId();
+                $result[$key]['title'] = $post->getTitle();
+                $result[$key]['slug'] = $post->getSlug();
+                $result[$key]['content'] = $post->getContent();
+                $result[$key]['author_email'] = $post->getAuthorEmail();
+                $result[$key]['published'] = $post->getPublished();
+                $result[$key]['comments'] = $post->getComments();
             }
         }
 
-        return $this->render('default/index.html.twig', $result);
+        return $this->render('default/index.html.twig', ['articles' => $result]);
     }
 }
