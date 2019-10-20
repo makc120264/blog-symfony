@@ -67,10 +67,41 @@ class Post
         $this->comments = new ArrayCollection();
     }
 
+    public function setAuthorEmail($email)
+    {
+        $this->authorEmail = $email;
+    }
+
+    public function setSlug($lastPostId)
+    {
+        $this->slug = 'post/' . $lastPostId;
+    }
+
+    public function setContent($content)
+    {
+        $this->content = $content;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function setPublishedAt()
+    {
+        $this->publishedAt = new \DateTime();
+    }
+
+    /**
+     * @param $title
+     */
+    public function setTitle($title)
+    {
+        $this->title = $title;
+    }
+
     /**
      * @return DateTime
      */
-    public function getPublished()
+    public function getPublishedAt()
     {
         $timestamp = $this->publishedAt->getTimestamp();
 

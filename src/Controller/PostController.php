@@ -4,12 +4,56 @@
 namespace App\Controller;
 
 use App\Entity\Post;
+use App\Forms\PostForm;
+use App\Repository\PostRepository;
+use Doctrine\Common\Persistence\ManagerRegistry;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class PostController extends AbstractController
 {
+
+    private $postRepository;
+
+    /**
+     * PostController constructor.
+     * @param PostRepository $postRepository
+     */
+    public function __construct(PostRepository $postRepository)
+    {
+        $this->postRepository = $postRepository;
+    }
+
+    /**
+     * @Route("post/add")
+     * @param Request $request
+     * @param PostRepository $repository
+     * @return Response
+     * @throws Exception
+     */
+    public function addPost(Request $request, PostRepository $repository)
+    {
+        $post = new Post();
+        $form = $this->createForm(PostForm::class, $post);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $lastPostId = $repository->getLastId();
+            $post->setSlug($lastPostId);
+            $post->setAuthorEmail('test@test.tst');
+
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
+        }
+
+        return $this->render('default/post/add-post.html.twig', ['form' => $form->createView()]);
+    }
+
     /**
      * @Route("post/{id}")
      * @param $id
@@ -26,7 +70,7 @@ class PostController extends AbstractController
         $result['slug'] = $postData->getSlug();
         $result['content'] = $postData->getContent();
         $result['author_email'] = $postData->getAuthorEmail();
-        $result['published'] = $postData->getPublished();
+        $result['published'] = $postData->getPublishedAt();
         $result['comments'] = $postData->getComments();
 
         return $this->render('default/post/post.html.twig', $result);
@@ -38,27 +82,10 @@ class PostController extends AbstractController
      */
     public function index()
     {
-        $result = [];
         $posts = $this->getDoctrine()
             ->getRepository(Post::class)
             ->findAll();
 
-        if (empty($posts)) {
-            $result['content'] = 'No posts';
-        } else {
-            /** @var int $key */
-            /** @var array $post */
-            foreach ($posts as $key => $post) {
-                $result[$key]['id'] = $post->getId();
-                $result[$key]['title'] = $post->getTitle();
-                $result[$key]['slug'] = $post->getSlug();
-                $result[$key]['content'] = $post->getContent();
-                $result[$key]['author_email'] = $post->getAuthorEmail();
-                $result[$key]['published'] = $post->getPublished();
-                $result[$key]['comments'] = $post->getComments();
-            }
-        }
-
-        return $this->render('default/index.html.twig', ['articles' => $result]);
+        return $this->render('default/index.html.twig', ['articles' => $posts, 'addPostSlug' => 'post/add']);
     }
 }

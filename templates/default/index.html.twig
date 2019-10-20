@@ -16,13 +16,7 @@
             {% endfor %}
         </div>
         <div class="row">
-            <!-- Button to Open the Modal -->
-            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
-                Add post
-            </button>
+            <a type="button" href="{{ addPostSlug }}" class="btn btn-primary" target="_blank">Add post</a>
         </div>
     </div>
-
-    {{ include('default/post/add-post.html.twig') }}
-
 {% endblock %}
